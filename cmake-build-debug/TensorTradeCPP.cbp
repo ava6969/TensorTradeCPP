@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="TensorTradeCPP"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\vcpkg\;CMake Files\..\..\vcpkg\scripts\;CMake Files\..\..\vcpkg\scripts\buildsystems\;CMake Files\..\..\vcpkg\installed\;CMake Files\..\..\vcpkg\installed\x64-linux\;CMake Files\..\..\vcpkg\installed\x64-linux\share\;CMake Files\..\..\vcpkg\installed\x64-linux\share\pybind11\;CMake Files\..\..\vcpkg\installed\x64-linux\share\pythoninterp\;CMake Files\..\..\libtorch\;CMake Files\..\..\libtorch\share\;CMake Files\..\..\libtorch\share\cmake\;CMake Files\..\..\libtorch\share\cmake\Torch\;CMake Files\..\..\libtorch\share\cmake\Caffe2\;CMake Files\..\..\libtorch\share\cmake\Caffe2\public\;CMake Files\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\;CMake Files\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\;CMake Files\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\FindCUDA\;CMake Files\cmake-build-debug\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="TensorTradeCPP">
+				<Option output="/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/TensorTradeCPP" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dewe/CLionProjects/TensorTradeCPP/feed"/>
+					<Add directory="/home/dewe/CLionProjects/TensorTradeCPP/oms"/>
+					<Add directory="/home/dewe/CLionProjects/TensorTradeCPP/ta-lib/include"/>
+					<Add directory="/home/dewe/CLionProjects/TensorTradeCPP/env"/>
+					<Add directory="/home/dewe/vcpkg/installed/x64-linux/include"/>
+					<Add directory="/home/dewe/libtorch/include"/>
+					<Add directory="/home/dewe/libtorch/include/torch/csrc/api/include"/>
+					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/usr/include/python3.8"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 TensorTradeCPP"/>
+					<CompileFile command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="TensorTradeCPP/fast">
+				<Option output="/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/TensorTradeCPP" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/dewe/CLionProjects/TensorTradeCPP/feed"/>
+					<Add directory="/home/dewe/CLionProjects/TensorTradeCPP/oms"/>
+					<Add directory="/home/dewe/CLionProjects/TensorTradeCPP/ta-lib/include"/>
+					<Add directory="/home/dewe/CLionProjects/TensorTradeCPP/env"/>
+					<Add directory="/home/dewe/vcpkg/installed/x64-linux/include"/>
+					<Add directory="/home/dewe/libtorch/include"/>
+					<Add directory="/home/dewe/libtorch/include/torch/csrc/api/include"/>
+					<Add directory="/usr/local/cuda/include"/>
+					<Add directory="/usr/include/python3.8"/>
+					<Add directory="/usr/include/c++/9"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/9"/>
+					<Add directory="/usr/include/c++/9/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/9/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 TensorTradeCPP/fast"/>
+					<CompileFile command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j32 -f &quot;/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/core/base.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/core/clock.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/core/dexceptions.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/core/dexceptions.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/core/types.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/default/actions.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/default/actions.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/default/informers.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/default/informers.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/default/observers.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/default/observers.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/default/rewards.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/default/rewards.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/default/stoppers.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/default/stoppers.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/generic/components/action_listener.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/generic/components/action_scheme.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/generic/components/informer.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/generic/components/observer.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/generic/components/renderer.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/generic/components/reward_scheme.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/generic/components/stopper.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/env/generic/environment.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/feed/api/boolean.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/feed/api/dstring.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/feed/api/float.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/feed/api/generic.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/feed/core/base.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/feed/core/base.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/feed/core/feed.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/feed/core/operators.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/main.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/exchanges/exchange.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/exchanges/exchange.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/instruments/exchange_pair.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/instruments/exchange_pair.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/instruments/instrument.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/instruments/instrument.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/instruments/quantity.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/instruments/quantity.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/instruments/trading_pair.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/instruments/trading_pair.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/broker.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/broker.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/create.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/criteria.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/criteria.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/order.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/order.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/order_listener.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/order_spec.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/order_spec.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/trade.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/orders/trade.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/services/execution/alpaca.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/services/execution/alpaca.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/services/execution/simulated.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/services/execution/simulated.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/services/slippage/random_slippage_model.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/services/slippage/slippage_model.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/wallets/ledger.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/wallets/portfolio.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/wallets/portfolio.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/wallets/wallet.cpp">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/oms/wallets/wallet.h">
+			<Option target="TensorTradeCPP"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../vcpkg/scripts/buildsystems/vcpkg.cmake">
+			<Option virtualFolder="CMake Files\..\..\vcpkg\scripts\buildsystems\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../vcpkg/installed/x64-linux/share/pybind11/FindPythonLibsNew.cmake">
+			<Option virtualFolder="CMake Files\..\..\vcpkg\installed\x64-linux\share\pybind11\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../vcpkg/installed/x64-linux/share/pybind11/pybind11Common.cmake">
+			<Option virtualFolder="CMake Files\..\..\vcpkg\installed\x64-linux\share\pybind11\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../vcpkg/installed/x64-linux/share/pybind11/pybind11Config.cmake">
+			<Option virtualFolder="CMake Files\..\..\vcpkg\installed\x64-linux\share\pybind11\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../vcpkg/installed/x64-linux/share/pybind11/pybind11ConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\vcpkg\installed\x64-linux\share\pybind11\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../vcpkg/installed/x64-linux/share/pybind11/pybind11Targets.cmake">
+			<Option virtualFolder="CMake Files\..\..\vcpkg\installed\x64-linux\share\pybind11\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../vcpkg/installed/x64-linux/share/pybind11/pybind11Tools.cmake">
+			<Option virtualFolder="CMake Files\..\..\vcpkg\installed\x64-linux\share\pybind11\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../vcpkg/installed/x64-linux/share/pythoninterp/vcpkg-cmake-wrapper.cmake">
+			<Option virtualFolder="CMake Files\..\..\vcpkg\installed\x64-linux\share\pythoninterp\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Torch/TorchConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Torch\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Torch/TorchConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Torch\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Caffe2Config.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Caffe2ConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Caffe2Targets-release.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Caffe2Targets.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/public/cuda.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\public\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/public/mkl.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\public\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/public/mkldnn.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\public\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/public/threads.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\public\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/public/utils.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\public\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/FindCUDA.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/FindCUDNN.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/upstream/CMakeInitializeConfigs.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/upstream/FindCUDA.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/upstream/FindPackageHandleStandardArgs.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/upstream/FindPackageMessage.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/../../libtorch/share/cmake/Caffe2/Modules_CUDA_fix/upstream/FindCUDA/select_compute_arch.cmake">
+			<Option virtualFolder="CMake Files\..\..\libtorch\share\cmake\Caffe2\Modules_CUDA_fix\upstream\FindCUDA\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/detect_cuda_compute_capabilities.cpp">
+			<Option virtualFolder="CMake Files\cmake-build-debug\"/>
+		</Unit>
+		<Unit filename="/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/detect_cuda_version.cc">
+			<Option virtualFolder="CMake Files\cmake-build-debug\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
