@@ -3,7 +3,7 @@
 //
 
 #include "catch.hpp"
-#include "../../core/base.h"
+#include "include/core/base.h"
 
 TEST_CASE("Basic Identifiable init")
 {

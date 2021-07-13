@@ -1,3 +1,0 @@
-/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/dewe/CLionProjects/TensorTradeCPP/cmake-build-debug/CMakeFiles/TensorTradeCPP.dir

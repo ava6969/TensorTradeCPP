@@ -2,11 +2,11 @@
 // Created by dewe on 7/4/21.
 //
 
-#include <exchanges/exchange.h>
+#include <include/oms/exchanges/exchange.h>
 #include "catch.hpp"
-#include "instruments/exchange_pair.h"
-#include "instruments/trading_pair.h"
-#include "../../core/dexceptions.h"
+#include "include/oms/instruments/exchange_pair.h"
+#include "include/oms/instruments/trading_pair.h"
+#include "include/core/dexceptions.h"
 using namespace ttc;
 
 TEST_CASE("Mock Exchange")
@@ -15,15 +15,15 @@ TEST_CASE("Mock Exchange")
     SECTION("Valid Init")
     {
         Exchange bitfinex("bitfinex");
-        ExchangePair exchangePair(bitfinex, USD/BTC);
-        REQUIRE(exchangePair.pair().base == USD);
-        REQUIRE(exchangePair.pair().quote == BTC);
+        ExchangePair exchangePair(bitfinex.Name(), USD/BTC);
+        REQUIRE(exchangePair.pair().base() == USD);
+        REQUIRE(exchangePair.pair().quote() == BTC);
     }
 
     SECTION("String")
     {
         Exchange bitfinex("bitfinex");
-        ExchangePair exchangePair(bitfinex, USD/BTC);
+        ExchangePair exchangePair(bitfinex.Name(), USD/BTC);
         REQUIRE(exchangePair.str() == "bitfinex:USD/BTC");
     }
 
@@ -33,9 +33,9 @@ TEST_CASE("Instrument")
 {
     SECTION("Init")
     {
-        REQUIRE(BTC.symbol == "BTC");
-        REQUIRE(BTC.precision == 8);
-        REQUIRE(BTC.name == "Bitcoin");
+        REQUIRE(BTC.symbol() == "BTC");
+        REQUIRE(BTC.precision() == 8);
+        REQUIRE(BTC.name() == "Bitcoin");
     }
 
     SECTION("Valid Equals AND not equals")
@@ -58,8 +58,8 @@ TEST_CASE("Instrument")
     SECTION("Divide")
     {
         auto pair = BTC/ETH;
-        REQUIRE(pair.base == BTC);
-        REQUIRE(pair.quote == ETH);
+        REQUIRE(pair.base() == BTC);
+        REQUIRE(pair.quote() == ETH);
 
         REQUIRE_THROWS_AS(BTC/ BTC, ttc::InvalidTradingPair);
     }

@@ -3,10 +3,11 @@
 //
 
 #define CATCH_CONFIG_MAIN
+
 #include "catch.hpp"
 
-#include "../../core/clock.h"
-#include "../../core/base.h"
+#include "include/core/clock.h"
+#include "include/core/base.h"
 
 TEST_CASE("Basic Clock Init")
 {
@@ -40,11 +41,16 @@ TEST_CASE("Time Indexed Init")
     FirstExample example1;
     SecondExample example2;
 
-    REQUIRE(example1._clock.Start() == 0);
-    REQUIRE(example1._clock.Step() == 0);
+    ttc::Clock clk;
 
-    REQUIRE(example2._clock.Start() == 0);
-    REQUIRE(example2._clock.Step() == 0);
+    example1._clock = &clk;
+    example2._clock = &clk;
+
+    REQUIRE(example1._clock->Start() == 0);
+    REQUIRE(example1._clock->Step() == 0);
+
+    REQUIRE(example2._clock->Start() == 0);
+    REQUIRE(example2._clock->Step() == 0);
 
     REQUIRE(example1._clock == example2._clock);
 
