@@ -187,7 +187,6 @@ namespace ttc {
 
         auto index = _clock->Step();
 
-//        performance_data["base_symbol"] = base_instrument.symbol();
         std::map<int, std::unordered_map<string, double> > performance_step;
 
         performance_step[index] = performance_data;

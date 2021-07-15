@@ -22,7 +22,8 @@ namespace ttc
     using Quantities = std::vector<Quantity>;
     using PerformanceListener = std::function<void(std::map<int, std::unordered_map<string, double> >)>;
 
-    class Portfolio : public TimedIdentifiable {
+    class Portfolio :
+        public TimedIdentifiable{
 
         Instrument base_instrument;
         std::map<std::pair<string, string>, string> m_wallet_ids;

@@ -55,3 +55,9 @@ class DataWrapper:
 
 def make_wrapper( ticker, market, args):
     return DataWrapper(ticker, market, args)
+
+
+if __name__ == '__main__':
+
+    wrapper = make_wrapper("BTCUSD", "crypto", ['SMA', {}])
+    print(wrapper)

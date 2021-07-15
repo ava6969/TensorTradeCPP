@@ -42,8 +42,8 @@ namespace ttc
 
             if(commission.size < std::pow(10, -quantity.instrument.precision()) )
             {
-                std::cerr << "Commission is less than instrument precision. Canceling order. "
-                             "Consider defining a custom instrument with a higher precision.";
+//                std::cerr << "Commission is less than instrument precision. Canceling order. "
+//                             "Consider defining a custom instrument with a higher precision.";
                 order.cancel("COMMISSION IS LESS THAN PRECISION.");
                 return nullopt;
             }
@@ -75,8 +75,8 @@ namespace ttc
 
             if(commission.size < std::pow(10, -quantity.instrument.precision()) )
             {
-                std::cerr << "Commission is less than instrument precision. Canceling order. "
-                             "Consider defining a custom instrument with a higher precision.";
+//                std::cerr << "Commission is less than instrument precision. Canceling order. "
+//                             "Consider defining a custom instrument with a higher precision.";
                 order.cancel("COMMISSION IS LESS THAN PRECISION.");
                 return nullopt;
             }

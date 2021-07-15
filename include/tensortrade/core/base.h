@@ -11,6 +11,7 @@
 #include <variant>
 #include "optional"
 #include "clock.h"
+#include "sstream"
 
 namespace ttc
 {
@@ -67,7 +68,8 @@ namespace ttc
     class TimedIdentifiable : public Identifiable, public TimeIndexed
     {
 
-        boost::gregorian::date::date_type created_at{};
+        std::chrono::time_point<std::chrono::system_clock,
+        std::chrono::system_clock::duration> created_at{};
 
     public:
 
@@ -85,10 +87,9 @@ namespace ttc
             created_at = _clock->now();
         }
 
-        int createdAt() const
+        [[nodiscard]] auto createdAt() const
         {
-            throw std::runtime_error("havent implemented yet");
-//            return created_at;
+            return created_at;
         }
 
     };
@@ -97,7 +98,6 @@ namespace ttc
     class Observable
     {
     protected:
-
         std::vector<Listener*> listeners;
 
     public:
@@ -112,8 +112,7 @@ namespace ttc
 
         Observable* detach(Listener* listener)
         {
-            Listener l = listener;
-            std::erase(listeners, l);
+            std::erase(listeners, listener);
             return this;
         }
 

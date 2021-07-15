@@ -14,22 +14,29 @@ using std::map;
 namespace ttc
 {
 
-    class DataFeed : public Stream {
+    template<typename PrimitiveDataType>
+    class BaseDataFeed : public Group<PrimitiveDataType> {
 
-        vector<Stream*> process{};
-        bool compiled{false}, map_of_map;
+    protected:
+        vector<Stream<PrimitiveDataType>*> process{};
+        bool compiled{};
 
     public:
+        BaseDataFeed()
+        {
+            process ={};
+            compiled = false;
+        }
 
-        DataFeed(std::vector<Float64Stream> streams, bool map_of_map=true): Stream("datafeed", move(streams)),
-                                                                            map_of_map(map_of_map)
+        BaseDataFeed(std::vector<Stream<PrimitiveDataType>*> streams):
+        Group<PrimitiveDataType>(move(streams), "datafeed")
         {}
 
         void compile()
         {
             auto edges = this->gather();
 
-            process = DataFeed::toposort(edges);
+            process = BaseDataFeed<PrimitiveDataType>::toposort(edges);
 
             compiled = true;
 
@@ -37,7 +44,7 @@ namespace ttc
 
         }
 
-        void run() override
+        virtual void run()
         {
             if( not compiled)
             {
@@ -46,43 +53,16 @@ namespace ttc
 
             for(auto const& s : process)
             {
-                s->run();
+                s->forward();
             }
 
-            Stream::run();
+            this->forward();
         }
 
-        StreamType forward() override
-        {
-            return map_of_map ? forward_map_of_map() : forward_map_();
-        }
-
-        StreamType forward_map_of_map()
-        {
-            unordered_map<string, unordered_map<string,double>> return_v;
-            for(auto const& x: this->inputs)
-            {
-                auto v = x->Value();
-                return_v[x->Name()] = std::get<unordered_map<string, double>>(v);
-            }
-            return return_v;
-        }
-
-        StreamType forward_map_()
-        {
-            unordered_map<string,double> return_v;
-            for(auto const& x: this->inputs)
-            {
-                return_v[x->Name()] = std::get<double>(x->Value());
-            }
-            return return_v;
-        }
-
-        template<class T>
-        T next()
+        std::unordered_map<string, PrimitiveDataType> next()
         {
             this->run();
-            return std::get<T>(this->Value());
+            return this->mm_data;
         }
 
         bool has_next() override
@@ -97,8 +77,56 @@ namespace ttc
                 s->reset();
             }
         }
-
     };
+
+    template<typename PrimitiveDataType>
+    class DataFeed : public BaseDataFeed<PrimitiveDataType> {
+
+        std::unordered_map<string, std::unordered_map<string, PrimitiveDataType>> mmm_data;
+
+    public:
+
+        DataFeed()=default;
+
+        DataFeed(std::vector<Stream<PrimitiveDataType>*> const& streams): BaseDataFeed<PrimitiveDataType>(move(streams))
+        {}
+
+        void forward() override
+        {
+            for(auto const& x: this->m_inputs)
+            {
+                this->mmm_data[x->Name()]  = dynamic_cast<Group<PrimitiveDataType>* >(x)->asMapData();
+            }
+        }
+
+        void reset() override
+        {
+            BaseDataFeed<PrimitiveDataType>::reset();
+            for (auto* listener : this->listeners) {
+                listener->reset();
+            }
+            this->mmm_data = {};
+        }
+
+        void run() override
+        {
+            BaseDataFeed<PrimitiveDataType>::run();
+
+            for (Portfolio* listener : this->listeners) {
+                listener->onNext(mmm_data);
+            }
+        }
+
+        std::unordered_map<string, std::unordered_map<string, PrimitiveDataType>> mmm_next()
+        {
+            this->run();
+            return this->mmm_data;
+        }
+
+        };
+
+
+
 
 }
 

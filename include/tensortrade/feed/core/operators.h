@@ -11,45 +11,44 @@
 
 namespace ttc {
 
-    class Apply : public Stream
+    template<typename T>
+    class Apply : public Stream<T>
     {
-        std::function<double(double)> func;
-
+        std::function<T(T)> func;
+        Stream<T>* node;
     public:
 
-        explicit Apply(std::shared_ptr<Stream> _inp,std::function<double(double)> const& _func,
-                       string name="apply"): Stream(move(name),vector<std::shared_ptr<Stream>>{_inp}),
-                       func(_func) {}
+        explicit Apply(Stream<T>* _inp, std::function<T(T)> const& _func,
+                       string name="apply"):Stream<T>(move(name)),func(_func), node(_inp) {}
 
-        StreamType forward()
+        void forward()
         {
-            auto node = this->inputs.front();
-            assert(node);
-            return this->func(std::get<double>(node->Value()));
+            this->m_data = this->func(node->value());
         }
     };
 
-    class Lag : public Stream
+    template<typename T>
+    class Lag : public Stream<T>
     {
         int lag{}, runs{};
         std::queue<double> history;
 
     public:
-        explicit Lag(int lag): Stream("lag"), lag(lag) {}
+        explicit Lag(int lag): Stream<T>("lag"), lag(lag) {}
 
-        inline StreamType forward() override
+        inline void forward() override
         {
             auto node = this->inputs[0];
             if(runs < lag)
             {
                 runs++;
                 history.push(std::get<double>(node->value.value()));
-                return std::nan("lag_nan");
+                this->value = std::nan("lag_nan");
             }
-            history.push(std::get<double>(node->Value()));
-            auto ret = history.back();
+            history.push(node->value());
+            this->m_data = history.back();
             history.pop();
-            return ret;
+
         }
 
         void reset() override
@@ -60,126 +59,45 @@ namespace ttc {
 
     };
 
-    class Aggregate : public Stream
+    template<typename T>
+    class Aggregate : public Group<T>
     {
+        std::function<T(std::vector<T> const& )> func;
 
-        std::function<double(std::vector<double> const& )> func;
     public:
 
-        Aggregate(std::function<double(std::vector<double> const&)> _fnc,
-                  std::vector< std::shared_ptr<Stream>> _inputs): Stream("agg", move(_inputs)), func(move(_fnc)) {}
+        Aggregate(std::function<T(std::vector<T> const&)> _fnc,
+                  std::vector<Stream<T>* > const& _inputs):Group<T>(_inputs, "agg"),
+                  func(move(_fnc)){}
 
-        StreamType forward()
+                  void forward()
         {
-            std::vector<double> _inp(this->inputs.size());
-            std::transform(this->inputs.begin(), this->inputs.end(), 
-                           _inp.begin(), [](std::shared_ptr<Stream > const& s)
+            std::vector<T> _inp(this->m_inputs.size());
+            //todo: use ranges
+            std::transform(this->m_inputs.begin(), this->m_inputs.end(), _inp.begin(), [](Stream<T>* s)
             {
-                return std::get<double>(s->Value());
+                return s->value();
             });
 
-            return func(_inp);
+            this->m_data = func(_inp);
         }
     };
 
+    template<typename L, typename R, typename OutputType>
+    class BinOp : public Group<OutputType> {
 
-    class Warmup : public Stream
-    {
-
-    };
-
-
-    class Reduce : public Stream
-    {
+        std::function<OutputType(L const&, R const&)> func;
 
     public:
-        Reduce(std::vector<std::shared_ptr<Stream > > _inputs): Stream("reduce", move(_inputs))
-        {}
+        BinOp(std::function<OutputType(L const&, R const&)> _fnc,
+              Stream<L>* l, Stream<R>* r): Group<OutputType>({l, r}, "bin_op"), func(move(_fnc)) {}
 
-        std::shared_ptr<Stream> agg(std::function<double(std::vector<double> const&)> func)
+        void forward() override
         {
-            return std::make_shared<Aggregate>(func, this->inputs);
-        }
-
-        std::shared_ptr<Stream>  sum()
-        {
-            return agg([](vector<double> const& input){ return std::accumulate(input.begin(), input.end(), 0);
-            });
-        }
-
-//        std::shared_ptr<Stream>  min()
-//        {
-//            return agg([] (vector<double> const& input){ return std::min_element(input.begin(), input.end());
-//            });
-//        }
-//
-//        std::shared_ptr<Stream>   max()
-//        {
-//            return agg([](vector<double> const& input){ return std::max_element(input.begin(), input.end());
-//            });
-//        }
-
-
-        StreamType forward()
-        {
-            std::vector<double> _inp(this->inputs.size());
-            std::transform(this->inputs.begin(), this->inputs.end(), _inp.begin(),[](std::shared_ptr<Stream > const& s)
-            {
-               return std::get<double>(s->Value());
-            });
-            return _inp;
+            this->m_data = func(this->m_inputs[0]->value(), this->m_inputs[1]->value());
         }
 
     };
-
-
-    class BinOp : public Stream {
-
-        std::function<double(double const&, double const&)> func;
-
-    public:
-        BinOp(std::function<double(double const&, double const&)>  _fnc, std::vector<Float64Stream> _inputs):
-                Stream("bin_op", move(_inputs)), func(move(_fnc)) {}
-
-        StreamType forward()
-        {
-            return func(std::get<double>(this->inputs[0]->Value()), std::get<double>(this->inputs[1]->Value()));
-        }
-
-    };
-
-//    template<typename T>
-//    class ForwardFill : public Stream<
-//    {
-//
-//    };
-//
-//    template<typename T>
-//    class FillNa : public Stream<T>
-//    {
-//
-//    };
-//
-//    template<typename T>
-//    class Accumulator : public Stream<T> {
-//
-//
-//    };
-//
-//    template<typename T>
-//    class Copy : public Stream<T> {
-//
-//
-//    };
-//
-//    template<typename T>
-//    class Freeze : public Stream<T> {
-//
-//
-//    };
-
-
-
 
 };
 

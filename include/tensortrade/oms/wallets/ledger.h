@@ -29,7 +29,7 @@ namespace ttc
     class Ledger
     {
         Transactions transactions;
-
+        bool m_skip_log{false};
 
     public:
 
@@ -38,6 +38,8 @@ namespace ttc
         inline void commit(Wallet const& wallet, Quantity const& quantity,
                            string const& source, string const& target, string const& memo)
         {
+            if (m_skip_log)
+                return;
             auto&& poid = quantity.path_id.value_or("");
 
             auto&& is_qty_locked = wallet.Locked().find(poid) == wallet.Locked().end() || poid.empty();
@@ -55,6 +57,8 @@ namespace ttc
                                       wallet.lockedBalance(),
                                       locked_balance});
         }
+
+        void setSkipLog(bool skip_log) { m_skip_log = skip_log; }
 
         void reset()
         {

@@ -68,7 +68,8 @@ namespace ttc
 
     bool Timed::check(const Order & order, const Exchange & exchange) const
     {
-        return (float(order._clock->Step()) - order.createdAt() ) <= m_duration;
+        return std::chrono::duration<double, std::milli>(
+                order._clock->now() - order.createdAt()).count() / 1000 <= m_duration;
     }
 
 }

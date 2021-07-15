@@ -68,8 +68,8 @@ namespace ttc
     }
 
     double PBR::getReward(struct Portfolio const& portfolio) {
-
-        auto returns = std::get<double>(iter_price->forward());
+        iter_price->forward();
+        auto returns = iter_price->value();
         if(prev_return)
         {
             returns -= prev_return.value();

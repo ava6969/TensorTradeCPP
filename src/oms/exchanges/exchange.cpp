@@ -20,17 +20,25 @@ namespace ttc
                        const ttc::ExchangeOptions &options,
                        vector<Float64Stream> const& _streams): name(std::move(_name)), service(callable),
                                                                options(options)  {
+        using namespace std::string_literals;
+        size_t start_idx{0};
+        string head{""};
+        if (not Named::namespaces.empty())
+        {
+            head = Named::namespaces.top();
+            start_idx += head.size() + 2;
+        }
 
-        for(auto const& s : _streams)
+        for(auto* s : _streams)
         {
             string pair_;
-            for(auto const& c : s->Name())
+            auto d_name = s->Name().substr(start_idx);
+            for(auto const& c : d_name)
             {
                 pair_ += isalnum(c) ? c : '/' ;
             }
-            auto new_name = name + std::string(":/") + s->Name();
-            price_streams[pair_] = s;
-            price_streams[pair_]->rename<Stream>(new_name);
+            auto new_name = head + ":/" + name + std::string(":/") + d_name;
+            price_streams[pair_] = s->rename(new_name);
         }
 
     }
@@ -64,7 +72,7 @@ namespace ttc
 
     float Exchange::quote_price(TradingPair const& trading_pair) const  {
 
-        auto price = std::get<double>(price_streams.at(trading_pair.str())->Value());
+        auto price = price_streams.at(trading_pair.str())->value();
         if(price == 0.f)
         {
             throw std::runtime_error(string("Price of trading pair ").

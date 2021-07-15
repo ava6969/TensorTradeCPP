@@ -16,11 +16,6 @@
 #include "torch/torch.h"
 
 
-#define  StreamType  \
-std::variant<double, std::unordered_map<string, double>, std::vector<double>, \
-std::unordered_map<string, unordered_map<string, double>>>
-
-
 namespace ttc
 {
 
@@ -32,31 +27,35 @@ namespace ttc
     using std::pair;
     using std::set;
 
+    template<typename OutputType>
+    class Stream;
+
+    template<typename PrimitiveType>
+    class Group;
+
     class Named {
 
     protected:
 
-        static std::stack<string> namespaces;
+
         static unordered_map<string, int> names;
         string name{};
 
     public:
 
+        static std::stack<string> namespaces;
         explicit Named(string name="generic");
         [[nodiscard]] virtual inline string Name() const { return name; }
 
-        template<class T=Named>
-        T* rename(string _name, string const &sep = ":/")
+        template<class T=double> Stream<T>* rename(string _name, string const &sep = ":/")
         {
             if(not Named::namespaces.empty())
             {
                 _name = Named::namespaces.top() + sep + _name;
             }
             name = std::move(_name);
-            return dynamic_cast<T*>(this);
+            return dynamic_cast<Stream<T>*>(this);
         }
-
-        static void clear() { namespaces = std::stack<string>(); }
 
     };
 
@@ -72,76 +71,60 @@ namespace ttc
         }
     };
 
-
+    template<typename T>
     class Stream : public Named, public Observable<Portfolio> {
 
     protected:
-        vector<std::shared_ptr<Stream > > inputs;
-
+        T m_data;
     public:
 
-        explicit Stream(string _name="stream", vector<std::shared_ptr<Stream> > _inputs={}):
-                           Named(move(_name)), inputs(std::move(_inputs)) {}
+        explicit Stream(string _name="stream"):Named(move(_name)) {}
 
-        std::optional<StreamType> value{std::nullopt};
-
-        auto Inputs() const { return inputs; }
-
-        virtual StreamType forward() = 0;
-
-        StreamType Value() const  { return value.value(); }
+        virtual void forward() = 0;
 
         virtual bool has_next()
         {
             return true;
         }
 
-        virtual void run()
-        {
-            this->value = this->forward();
-            for (auto* listener: listeners) {
-                listener->onNext(std::get<unordered_map<string, unordered_map<string, double>>>(value.value()));
-            }
-        }
+        auto value() const { return m_data; }
 
         virtual void reset()
         {
-            for (auto* listener: listeners) {
-                listener->reset();
-            }
-
-            for (auto const &stream: inputs) {
-                stream->reset();
-            }
-
-            value = std::nullopt;
+            m_data = {};
         }
 
-        vector<pair<Stream*, Stream*>> gather() {vector<Stream* > v;
-            vector<pair<Stream* , Stream* > > e;
-           auto result =  _gather(this, v, e);
+        vector<pair<Stream<T>*, Stream<T>*>> gather() {
+            vector<Stream<T>* > v;
+            vector<pair<Stream<T>* , Stream<T>* > > e;
+            auto result =  _gather(this, v, e);
             return result;
         }
 
-        static vector<pair<Stream*, Stream*>> _gather(Stream* stream, vector<Stream* >& vertices,
-                                                      vector<pair<Stream* , Stream* > >&  edges) {
+        static vector<pair<Stream<T>*, Stream<T>*>> _gather(Stream<T>* stream, vector<Stream<T>* >& vertices,
+                                                            vector<pair<Stream<T>* , Stream<T>* > >&  edges) {
 
             if (std::find(vertices.begin(), vertices.end(), stream) == vertices.end())
             {
                 vertices.push_back(stream);
 
-                for (auto const& s : stream->inputs) {
-                    edges.emplace_back(s.get(), stream);
+                if(auto group_type = dynamic_cast<Group<T>*>(stream))
+                {
+                    for (auto* s : group_type->inputs()) {
+                        edges.emplace_back(s, stream);
+                    }
+
+                    for (auto* s : group_type->inputs()) {
+                        Stream::_gather(s, vertices, edges);
+                    }
                 }
 
-                for (auto const& s : stream->inputs) {
-                    Stream::_gather(s.get(), vertices, edges);
-                }
             }
+
             return edges;
         }
 
-        static std::vector<Stream*>  toposort(vector<pair<Stream* , Stream* >> edges)
+        static std::vector<Stream<T>*>  toposort(vector<pair<Stream* , Stream* >> edges)
         {
             auto splitter = [](vector<pair<Stream* , Stream* >> const& _e) -> std::pair<std::set<Stream*  >, std::set<Stream*  >> {
                 std::vector<Stream* > src, tgt;
@@ -194,23 +177,26 @@ namespace ttc
 
             }
 
-            return move(process);
+            return process;
         }
-
+        virtual ~Stream() = default;
     };
 
-    using Float64Stream = std::shared_ptr<Stream>;
+    using Float64Stream = Stream<double>*;
 
-    class IterableStream : public Stream {
+    template<typename OutputType>
+    class IterableStream : public Stream<OutputType> {
 
         bool is_gen{false}, stop{false};
-        std::vector<double> iterable;
-        double current;
+        std::vector<OutputType> iterable;
         decltype(iterable.begin()) ptr;
+        OutputType current;
 
-    public:
-        explicit IterableStream(vector<double> source, string name="source"): Stream(std::move(name)), ptr(0)
+        explicit IterableStream(vector<OutputType> const& source,
+                                string name="source"):
+                                Stream<OutputType>(std::move(name)), ptr(0)
         {
+
             iterable = source;
             ptr = iterable.begin();
             try {
@@ -221,14 +207,18 @@ namespace ttc
             }
         }
 
-        StreamType forward() override
+    public:
+        void forward() override
         {
-            auto v = current;
-//            std::advance(ptr, 1);
-            ptr++;
+            this->m_data = current;
+            std::advance(ptr, 1);
             current = *ptr;
             stop = (ptr + 1) == iterable.end();
-            return v;
+        }
+
+        size_t size()
+        {
+            return iterable.size();
         }
 
         bool has_next() override
@@ -238,7 +228,6 @@ namespace ttc
 
         void reset() override
         {
-
             ptr = iterable.begin();
             stop = false;
             try {
@@ -248,125 +237,123 @@ namespace ttc
                 stop = true;
             }
 
-            Stream::reset();
+            Stream<OutputType>::reset();
         }
+
+        friend class Ctx;
     };
 
+    template<typename PrimitiveType=double>
+    class Group : public Stream<PrimitiveType> {
 
-    class Group : public Stream {
+    protected:
 
-        std::map<string, std::shared_ptr<Stream> > streams;
+        vector< Stream<PrimitiveType>* > m_inputs;
+        std::unordered_map<string, PrimitiveType> mm_data;
+        explicit Group( vector<Stream<PrimitiveType>*> _inputs,
+                        std::string name="group"): Stream<PrimitiveType>(move(name)), m_inputs(_inputs){
+        }
+
+        Group(){
+            m_inputs = {};
+            mm_data = {};
+        }
 
     public:
 
-        explicit Group(vector<std::shared_ptr<Stream > > _inputs, std::string name="group"):
-        Stream(move(name), move(_inputs)) {
 
-            for(auto const& x : this->inputs)
-                streams[x->Name()] = x;
-        }
-
-        StreamType forward() override
+        void forward() override
         {
-            std::unordered_map<string, double> res;
-            for(auto const& x: this->inputs)
+            for(auto const& x: this->m_inputs)
             {
-                res[x->Name()] = std::get<double>(x->Value());
+                this->mm_data[x->Name()]  = x->value();
             }
-            return res;
         }
 
-        auto operator[](string const& name)
+        void reset()
         {
-            return streams[name];
+            Stream<PrimitiveType>::reset();
+            this->mm_data = {};
+            for (auto const &stream: m_inputs) {
+                stream->reset();
+            }
         }
 
+        auto asMapData() const { return mm_data; }
+
+        inline auto inputs() const{ return m_inputs; }
+
+        friend class Ctx;
     };
 
-    template<class ClassType>
-    class Sensor : public Stream {
+    template<class ClassType, typename OutputType>
+    class Sensor : public Stream<OutputType> {
 
-        static const string generic_name;
         ClassType const& obj;
         std::function<double(ClassType const&)> func;
 
-    public:
-        Sensor(ClassType const& _obj, std::function<double(ClassType const&)>  _func, std::string name="sensor"):
-        Stream(move(name)), obj(_obj), func(std::move(_func)){}
 
-        StreamType forward() override
+        Sensor(ClassType const& _obj,
+               std::function<OutputType(ClassType const&)>  _func, std::string name="sensor"):
+                Stream<OutputType>(move(name)), obj(_obj), func(std::move(_func)){}
+    public:
+        void forward() override
         {
-            return func(obj);
+            this->m_data = func(obj);
         }
 
+        friend class Ctx;
     };
 
-    class Constant : public Stream {
+    template<typename OutputType=double>
+    class Constant : public Stream<OutputType>  {
 
-        double constant;
+        OutputType constant;
 
-    public:
-        explicit Constant(double const& value, std::string name="constant"):Stream(move(name)), constant(value)
+        explicit Constant(OutputType const& value,
+                          std::string name="constant"):
+                          Stream<OutputType>(move(name)),
+                          constant(value)
         {}
 
-        StreamType forward()
+    public:
+        void forward()
         {
-            return constant;
+            this->m_data = constant;
         }
 
+        friend class Ctx;
     };
 
-    class Placeholder : public Stream {
+    template<typename OutputType=double,
+            typename ListenerType=Portfolio>
+    class Placeholder : public Stream<OutputType>  {
+
+        explicit Placeholder(std::string name="placeholder"):
+        Stream<OutputType>(move(name))
+        {}
 
     public:
-        explicit Placeholder(std::string name="placeholder"):Stream(move(name))
-        {
-        }
-
-        void push(double const& _value)
+        void push(OutputType const& _value)
         {
             this->value = _value;
         }
 
-        StreamType forward() override
+        void forward() override
         {
-            return this->value.value();
+            // does nothing
         }
 
         void reset() override
         {
-            this->value = std::nullopt;
+            this->m_data = {};
         }
 
+        friend class Ctx;
 
     };
 
 
-    static std::shared_ptr<Stream> source(std::vector<double> vect)
-    {
-        return std::make_shared<IterableStream>(std::move(vect));
-    }
-
-    static std::shared_ptr<Stream> group(std::vector<std::shared_ptr<Stream>> vect)
-    {
-        return std::make_shared<Group>(std::move(vect));
-    }
-
-    template<class ClassType>
-    static std::shared_ptr<Stream> sensor(ClassType const& _obj, std::function<double(ClassType const&)>  _func)
-    {
-        return std::make_shared<Sensor<ClassType>>(_obj, _func);
-    }
-
-    static std::shared_ptr<Stream> constant(double const& value)
-    {
-        return std::make_shared<Constant>(value);
-    }
-
-    static std::shared_ptr<Stream> placeholder()
-    {
-        return std::make_shared<Placeholder>();
-    }
 
 }
 

@@ -72,6 +72,7 @@ namespace ttc {
         Quantity(Quantity const &)=default;
 
         Quantity& operator=(Quantity const&)=default;
+        bool operator==(Quantity const& ) const=default;
 
         [[nodiscard]] inline bool is_locked() { isLocked = path_id.has_value();  return isLocked;}
 
@@ -89,7 +90,8 @@ namespace ttc {
 
         [[nodiscard]] inline Quantity quantize() const
         {
-            return {instrument,  size, path_id};
+            auto q = double(floor(size * TEN_PRECISION)) / TEN_PRECISION;
+            return {instrument,  q, path_id};
         }
 
         [[nodiscard]] Quantity contain(const ExchangePair& exchangePair) const;

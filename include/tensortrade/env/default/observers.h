@@ -5,11 +5,9 @@
 #ifndef TENSORTRADECPP_OBSERVERS_H
 #define TENSORTRADECPP_OBSERVERS_H
 
-
 #include <map>
 #include <tensortrade/env/generic/components/observer.h>
-#include <tensortrade/feed/api/generic.h>
-#include "tensortrade/feed/api/float.h"
+#include "tensortrade/core/context.h"
 #include "torch/torch.h"
 #include "vector"
 #include "tensortrade/feed/core/base.h"
@@ -20,65 +18,6 @@
 #include <boost/algorithm/string.hpp>
 namespace ttc {
 
-    static std::vector<Float64Stream> create_wallet_source(Wallet const& wallet, bool include_worth=true)
-    {
-        auto exchange_name = wallet.exchange().Name();
-        auto symbol = wallet.instrument().symbol();
-        std::vector<Float64Stream> streams;
-
-        NameSpace nameSpace(exchange_name + ":/" + symbol);
-        streams.push_back(sensor<Wallet>(wallet,[](Wallet const& w) { return w.Balance().asDouble();} ));
-        streams.back()->rename<Stream>("free");
-
-        streams.push_back(sensor<Wallet>(wallet, [](Wallet const& w){ return w.lockedBalance().asDouble();}));
-        streams.back()->rename<Stream>("locked");
-
-        streams.push_back(sensor<Wallet >(wallet, [](Wallet const& w){ return w.totalBalance().asDouble(); }));
-        streams.back()->rename<Stream>("total");
-
-        if (include_worth)
-        {
-            auto price = ttc::select(wallet.exchange().streams(), [&symbol]( auto const& node) -> bool {
-                return node->Name().ends_with(symbol) or node->Name().find(symbol) != string::npos; });
-            streams.push_back(mul(price , streams.back() ));
-            streams.back()->rename<Stream>("worth");
-        }
-        return streams;
-    }
-
-    static std::vector<Float64Stream>  create_internal_streams(Portfolio* portfolio)
-    {
-
-        auto base_symbol = portfolio->baseInstrument().symbol();
-        std::vector<Float64Stream> sources;
-
-        for(auto const& wallet_id : portfolio->wallets())
-        {
-            auto const& wallet = Wallet::wallet(wallet_id);
-            auto symbol = wallet.instrument().symbol();
-
-            auto streams = wallet.exchange().streams();
-            sources.insert(sources.end(), streams.begin(), streams.end());
-
-            auto wallet_sources = create_wallet_source(wallet, symbol != base_symbol);
-            sources.insert(sources.end(), wallet_sources.begin(), wallet_sources.end());
-        }
-        vector<Float64Stream> worthStreams = {};
-        for(auto const& s : sources)
-        {
-            if( (s->Name().find(base_symbol) != std::string::npos &&  s->Name().ends_with(":/total")) or
-            s->Name().ends_with("worth"))
-            {
-                worthStreams.push_back(s);
-            }
-        }
-
-        Reduce reducer(worthStreams);
-        sources.push_back(reducer.sum());
-        sources.back()->rename<Stream>("net_worth");
-
-        return sources;
-    }
 
     class ObservationHistory {
 
@@ -109,7 +48,7 @@ namespace ttc {
     class TensorTradeObserver : public Observer<torch::Tensor> {
 
         std::vector<int> dshape;
-        std::unique_ptr<class DataFeed> feed;
+        std::unique_ptr<DataFeed<double>> feed;
         ObservationHistory history;
         int window_size;
         std::optional<int> min_periods;
@@ -117,9 +56,10 @@ namespace ttc {
 
     public:
 
-        explicit TensorTradeObserver(class Portfolio *portfolio,
-                class DataFeed* dataFeed= nullptr,
-                DataFeed* rendererFeed= nullptr,
+        explicit TensorTradeObserver(
+                class Portfolio *portfolio,
+                BaseDataFeed<double>* dataFeed= nullptr,
+                BaseDataFeed<double>* rendererFeed= nullptr,
                 int window_size=1,
                 std::optional<int> min_periods=std::nullopt);
 
@@ -136,7 +76,12 @@ namespace ttc {
 
         torch::Tensor tensorView(unordered_map<string, double> const& inp);
 
-        void reset();
+        void reset() override;
+
+        static std::vector<Float64Stream> create_wallet_source(Wallet const& wallet, bool include_worth=true);
+
+        static std::vector<Float64Stream>  create_internal_streams(Portfolio* portfolio);
+
     };
 
 }

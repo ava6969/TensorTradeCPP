@@ -173,7 +173,7 @@ namespace ttc
          quantity = source.withdraw(quantity, "FILL ORDER");
 
          Instrument instrument;
-         float converted_size;
+         double converted_size;
          if(quantity.instrument == exchange_pair.pair().base())
          {
              instrument = exchange_pair.pair().quote();
@@ -189,15 +189,6 @@ namespace ttc
          std::stringstream ss;
          ss << "TRADED " << quantity.str() << " " << exchange_pair.str() << " @ "<< exchange_pair.price();
          converted = target.deposit(converted, ss.str());
-
-         auto lsb2 = source.m_locked.at(poid.value()).size;
-         auto ltb2 = target.m_locked.contains(poid.value())? target.m_locked.at(poid.value()).size :
-                 (pair.quote()*0).size;
-
-         auto q = quantity.size;
-         auto c = commission.size;
-         auto cv = converted.size;
-         auto p = pair == exchange_pair.pair() ? exchange_pair.inverse_price() : exchange_pair.price();
 
          return {quantity, commission, exchange_pair.price()};
 

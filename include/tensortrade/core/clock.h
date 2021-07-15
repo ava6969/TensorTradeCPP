@@ -5,9 +5,7 @@
 #ifndef TENSORTRADECPP_CLOCK_H
 #define TENSORTRADECPP_CLOCK_H
 
-#include "boost/date_time/posix_time/posix_time.hpp"
-using namespace boost::posix_time;
-using namespace boost::gregorian;
+#include "chrono"
 
 namespace ttc {
 
@@ -19,11 +17,7 @@ namespace ttc {
         Clock() = default;
 
         inline auto now() const {
-            return second_clock::local_time().date();
-        }
-
-        inline auto now(std::string const &format) const {
-            return to_simple_string(second_clock::local_time().date());
+            return std::chrono::high_resolution_clock::now();
         }
 
         void increment() {

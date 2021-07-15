@@ -6,9 +6,12 @@
 #define TENSORTRADECPP_CRITERIA_H
 
 #include <utility>
-
 #include "functional"
 #include "string"
+#include "boost/date_time/posix_time/posix_time.hpp"
+
+using namespace boost::posix_time;
+using namespace boost::gregorian;
 
 namespace ttc {
 
@@ -60,7 +63,7 @@ namespace ttc {
         bool check(Order const &order, Exchange const &exchange) const override;
 
         [[nodiscard]] string str() const {
-
+            return "";
         }
 
     };
@@ -77,7 +80,7 @@ namespace ttc {
         bool check(Order const &order, Exchange const &exchange) const override;
 
         string str() const {
-
+            return "";
         }
     };
 
@@ -113,20 +116,21 @@ namespace ttc {
         bool check(const Order &order, const Exchange &exchange) const override;
 
         string str() const {
-
+            return "";
         }
 
     };
 
     class Timed : public Criteria {
 
-        float m_duration;
+        double m_duration;
+
     public:
-        Timed(float duration) : m_duration(duration) {}
+        Timed(double duration) : m_duration(duration) {}
 
         bool check(const Order &order, const Exchange &exchange) const override;
 
-        std::string str() const {
+        [[nodiscard]] std::string str() const {
             return std::string("<Timed: duration=").append(std::to_string(m_duration)).append(">");
         }
     };
